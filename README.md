@@ -25,7 +25,9 @@ Based on Debian 9 (Stretch) with [Libreswan](https://libreswan.org) (IPsec VPN s
 
 ## Install Docker
 
-First, [install and run Docker](https://docs.docker.com/engine/installation/) on your Linux server.
+First, [install and run Docker](https://docs.docker.com/install/) on your Linux server.
+
+**Note:** Ubuntu 18.04 is not yet supported due to an xl2tpd [issue](https://github.com/xelerance/xl2tpd/issues/147) with Linux kernel 4.15.
 
 ## Download
 
@@ -137,7 +139,7 @@ For **Windows users**, this [one-time registry change](https://github.com/hwdsl2
 <a name="multi-device-note"></a>
 The same VPN account can be used by your multiple devices. However, due to an IPsec/L2TP limitation and an Libreswan [issue](https://github.com/libreswan/libreswan/issues/166), it is not currently possible to connect multiple devices simultaneously from behind the same NAT (e.g. home router).
 
-For servers with an external firewall (e.g. [EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)/[GCE](https://cloud.google.com/compute/docs/vpc/firewalls)), open UDP ports 500 and 4500 for the VPN.
+For servers with an external firewall (e.g. [EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)/[GCE](https://cloud.google.com/vpc/docs/firewalls)), open UDP ports 500 and 4500 for the VPN.
 
 Before editing any VPN config files, you must first [start a Bash session](https://github.com/hwdsl2/docker-ipsec-vpn-server#bash-shell-inside-container) in the running container.
 
@@ -244,7 +246,7 @@ The ports that are exposed for this container to work are:
 
 ## License
 
-Copyright (C) 2016-2017 [Lin Song](https://www.linkedin.com/in/linsongui) [![View my profile on LinkedIn](https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png)](https://www.linkedin.com/in/linsongui)   
+Copyright (C) 2016-2018 [Lin Song](https://www.linkedin.com/in/linsongui) [![View my profile on LinkedIn](https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png)](https://www.linkedin.com/in/linsongui)   
 Based on [the work of Thomas Sarlandie](https://github.com/sarfata/voodooprivacy) (Copyright 2012)
 
 This work is licensed under the [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/)   

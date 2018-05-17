@@ -25,7 +25,9 @@
 
 ## 安装 Docker
 
-首先，在你的 Linux 服务器上 [安装并运行 Docker](https://docs.docker.com/engine/installation/)。
+首先，在你的 Linux 服务器上 [安装并运行 Docker](https://docs.docker.com/install/)。
+
+**注：** 目前本镜像还不支持 Ubuntu 18.04，因为一个 xl2tpd 与 Linux 内核 4.15 兼容性的 [问题](https://github.com/xelerance/xl2tpd/issues/147)。
 
 ## 下载
 
@@ -137,7 +139,7 @@ docker exec -it ipsec-vpn-server ipsec whack --trafficstatus
 <a name="multi-device-note"></a>
 同一个 VPN 账户可以在你的多个设备上使用。但是由于 IPsec/L2TP 的局限性以及一个在 Libreswan 中的[问题](https://github.com/libreswan/libreswan/issues/166)，现在还不支持同时连接在同一个 NAT（比如家用路由器）后面的多个设备。
 
-对于有外部防火墙的服务器（比如 [EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)/[GCE](https://cloud.google.com/compute/docs/vpc/firewalls)），请为 VPN 打开 UDP 端口 500 和 4500。
+对于有外部防火墙的服务器（比如 [EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security.html)/[GCE](https://cloud.google.com/vpc/docs/firewalls)），请为 VPN 打开 UDP 端口 500 和 4500。
 
 在编辑任何 VPN 配置文件之前，你必须首先在正在运行的 Docker 容器中 [开始一个 Bash 会话](#在容器中运行-bash-shell)。
 
@@ -245,7 +247,7 @@ docker exec -it ipsec-vpn-server grep pluto /var/log/auth.log
 
 ## 授权协议
 
-版权所有 (C) 2016-2017 [Lin Song](https://www.linkedin.com/in/linsongui) [![View my profile on LinkedIn](https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png)](https://www.linkedin.com/in/linsongui)   
+版权所有 (C) 2016-2018 [Lin Song](https://www.linkedin.com/in/linsongui) [![View my profile on LinkedIn](https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png)](https://www.linkedin.com/in/linsongui)   
 基于 [Thomas Sarlandie 的工作](https://github.com/sarfata/voodooprivacy) (Copyright 2012) (版权所有 2012)
 
 这个项目是以 [知识共享署名-相同方式共享3.0](http://creativecommons.org/licenses/by-sa/3.0/) 许可协议授权。   
