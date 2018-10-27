@@ -65,7 +65,7 @@ if [ -z "$VPN_IPSEC_PSK" ] && [ -z "$VPN_USER" ] && [ -z "$VPN_PASSWORD" ]; then
   else
     echo
     echo "VPN credentials not set by user. Generating random PSK and password..."
-    VPN_IPSEC_PSK="$(LC_CTYPE=C tr -dc 'A-HJ-NPR-Za-km-z2-9' < /dev/urandom | head -c 16)"
+    VPN_IPSEC_PSK="$(LC_CTYPE=C tr -dc 'A-HJ-NPR-Za-km-z2-9' < /dev/urandom | head -c 20)"
     VPN_USER=vpnuser
     VPN_PASSWORD="$(LC_CTYPE=C tr -dc 'A-HJ-NPR-Za-km-z2-9' < /dev/urandom | head -c 16)"
 
@@ -142,9 +142,9 @@ conn shared
   dpddelay=30
   dpdtimeout=120
   dpdaction=clear
-  ike=3des-sha1,3des-sha2,aes-sha1,aes-sha1;modp1024,aes-sha2,aes-sha2;modp1024
-  phase2alg=3des-sha1,3des-sha2,aes-sha1,aes-sha2,aes256-sha2_512
-  sha2-truncbug=yes
+  ike=aes256-sha2,aes128-sha2,aes256-sha1,aes128-sha1,aes256-sha2;modp1024,aes128-sha1;modp1024
+  phase2alg=aes_gcm256-null,aes_gcm128-null,aes256-sha2_512,aes128-sha2_512,aes256-sha2,aes128-sha2,aes256-sha1,aes128-sha1
+  sha2-truncbug=no
 
 conn l2tp-psk
   auto=add
@@ -170,6 +170,10 @@ conn xauth-psk
   cisco-unity=yes
   also=shared
 EOF
+
+if uname -r | grep -qi 'coreos'; then
+  sed -i '/phase2alg/s/,aes256-sha2_512,aes128-sha2_512//' /etc/ipsec.conf
+fi
 
 # Specify IPsec PSK
 cat > /etc/ipsec.secrets <<EOF
@@ -289,12 +293,12 @@ Setup VPN clients: https://git.io/vpnclients
 
 EOF
 
-# Load IPsec NETKEY kernel module
+# Load IPsec kernel module
 modprobe af_key
 
 # Start services
-mkdir -p /var/run/pluto /var/run/xl2tpd
-rm -f /var/run/pluto/pluto.pid /var/run/xl2tpd.pid
+mkdir -p /run/pluto /var/run/pluto /var/run/xl2tpd
+rm -f /run/pluto/pluto.pid /var/run/pluto/pluto.pid /var/run/xl2tpd.pid
 
-/usr/local/sbin/ipsec start --config /etc/ipsec.conf
+/usr/local/sbin/ipsec start
 exec /usr/sbin/xl2tpd -D -c /etc/xl2tpd/xl2tpd.conf
